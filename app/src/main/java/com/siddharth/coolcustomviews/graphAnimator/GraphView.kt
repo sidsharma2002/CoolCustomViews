@@ -65,7 +65,7 @@ class GraphView(context: Context, attributeSet: AttributeSet) : View(context, at
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        Log.d("GraphView","onDraw")
+        Log.d("onDraw", "GraphView")
         for (i in pointList)
             canvas?.drawCircle(i.first, i.second, 5F, paint)
     }

@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import com.siddharth.coolcustomviews.R
 import kotlin.math.min
@@ -125,6 +126,7 @@ class NeuroProgressBar(context: Context, attributeSet: AttributeSet) : View(cont
     }
 
     override fun onDraw(canvas: Canvas?) {
+        Log.d("onDraw", " NeuroProgress")
         canvas?.drawArc(ovalSpace, 130F, 200F, false, paintContainer)
         canvas?.drawArc(ovalSpace, -40F, 150F, false, paintDarkShadow)
         canvas?.drawArc(ovalSpace, 0F, 360F, false, paintNormal)
