@@ -8,81 +8,9 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LL1_1"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LL1_2"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
-
-    <LinearLayout
-        android:id="@+id/ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="6sp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LL2_1"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LL2_2"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="6sp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LL3_1"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LL3_2"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="6sp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="LL4_1"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="LL4_2"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
