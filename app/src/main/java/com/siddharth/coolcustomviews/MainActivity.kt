@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUi() {
-        val thingsList = List(3) {
+        val thingsList = List(8) {
             10
         }
 

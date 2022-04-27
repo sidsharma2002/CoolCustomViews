@@ -7,7 +7,9 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.recyclerview.widget.RecyclerView
 import com.siddharth.coolcustomviews.R
 import kotlin.math.abs
-import kotlin.math.floor
+
+import kotlin.math.*
+
 import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
@@ -23,26 +25,28 @@ class MyLayoutManager(resources: Resources, private val screenWidth: Int) : Recy
     }
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
-        if (recycler != null && state != null)
-            fill(recycler, state)
+        fillSafely(recycler, state)
     }
 
     private fun fill(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
         detachAndScrapAttachedViews(recycler)
-        val firstVisiblePosition = floor(horizontalOffset.toDouble() / viewWidth.toDouble()).toInt()
-        val lastVisiblePosition = ((horizontalOffset + screenWidth) / viewWidth).toInt()
+        var firstVisiblePosition = floor(horizontalOffset.toDouble() / viewWidth.toDouble()).toInt()
+        firstVisiblePosition = max(0, firstVisiblePosition)
+
+        var lastVisiblePosition = (((screenWidth.toDouble())) / viewWidth.toDouble()).toInt() + firstVisiblePosition
+        lastVisiblePosition = min(itemCount, lastVisiblePosition + 1)   //
 
         for (i in firstVisiblePosition..lastVisiblePosition) {
-            Log.d(TAG, "33 $firstVisiblePosition $lastVisiblePosition")
-            var recyclerIndex = i % itemCount
-            if (recyclerIndex < 0) {
-                recyclerIndex += itemCount
-            }
-            val view = recycler.getViewForPosition(recyclerIndex)
+//     for infinite loop :
+//            var recyclerIndex = i % itemCount
+//            if (recyclerIndex < 0) {
+//                recyclerIndex += itemCount
+//            }
+            if (i >= itemCount) return
+            val view = recycler.getViewForPosition(i)
             addView(view)
             layoutChildView(i, viewWidth, view)
         }
-
         recycler.scrapList.toList().forEach { recycler.recycleView(it.itemView) }
     }
 
@@ -51,16 +55,12 @@ class MyLayoutManager(resources: Resources, private val screenWidth: Int) : Recy
         val right = left + (viewWidth)
         val top = getTopOffsetForView(left + viewWidth / 2)
         val bottom = top + (viewWidth)
-
-        Log.d(TAG, "top offset ${getTopOffsetForView(left + viewWidth / 2)}")
-        Log.d(TAG, "$left $right $top $bottom")
-
         measureChild(view, viewWidth, viewWidth)
         layoutDecorated(view, left, top, right, bottom)
     }
 
     private fun getTopOffsetForView(centerXCoordinate: Int): Int {
-        val sinValue = (60 * (tan(centerXCoordinate.toDouble() / 60))).toInt()
+        val sinValue = (60 * (sin(centerXCoordinate.toDouble() / 60))).toInt()
         return sinValue + screenWidth / 2
     }
 
@@ -68,9 +68,31 @@ class MyLayoutManager(resources: Resources, private val screenWidth: Int) : Recy
     override fun canScrollVertically(): Boolean = false
 
     override fun scrollHorizontallyBy(dx: Int, recycler: RecyclerView.Recycler?, state: RecyclerView.State?): Int {
+        if (screenWidth > itemCount * viewWidth) {
+            return 0;
+        }
+
+        if ((horizontalOffset <= 0 && dx < 0)) {    // check if user trying to scroll through left end
+            horizontalOffset = 0
+            // call fill again to redraw views when horizontal offset value was set
+            fillSafely(recycler, state)
+            return 0
+        }
+
+        if ((itemCount * viewWidth <= horizontalOffset + screenWidth) && dx > 0) { // check if user trying to scroll through right end
+            horizontalOffset = itemCount * viewWidth - screenWidth
+            // call fill again to redraw views when horizontal offset  value was set
+            fillSafely(recycler, state)
+            return 0
+        }
+
         horizontalOffset += dx
+        fillSafely(recycler, state)
+        return dx
+    }
+
+    private fun fillSafely(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
         if (recycler != null && state != null)
             fill(recycler, state)
-        return dx
     }
 }
