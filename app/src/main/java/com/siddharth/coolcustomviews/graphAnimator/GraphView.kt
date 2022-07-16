@@ -12,7 +12,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import java.lang.Math.tan
 import kotlin.math.sin
 
-class GraphView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
+abstract class GraphView(context: Context, attributeSet: AttributeSet?) : View(context, attributeSet) {
 
     private var currentX = 0F
     private var currentY = 0F
@@ -70,7 +70,5 @@ class GraphView(context: Context, attributeSet: AttributeSet) : View(context, at
             canvas?.drawCircle(i.first, i.second, 5F, paint)
     }
 
-    fun getY(x: Float): Float {
-        return (sin((x/50)) *200 + 700)
-    }
+    abstract fun getY(x: Float): Float
 }

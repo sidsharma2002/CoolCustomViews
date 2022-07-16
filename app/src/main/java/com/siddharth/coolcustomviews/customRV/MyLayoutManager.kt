@@ -14,11 +14,12 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
 
-class MyLayoutManager(resources: Resources, private val screenWidth: Int) : RecyclerView.LayoutManager() {
+abstract class MyLayoutManager(private val resources: Resources, private val screenWidth: Int) :
+    RecyclerView.LayoutManager() {
 
     private val TAG = "LayoutManager"
     private var horizontalOffset = 0
-    private val viewWidth = resources.getDimensionPixelSize(R.dimen.item_width)
+    private var viewWidth = resources.getDimensionPixelSize(R.dimen.item_width)
 
     override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
         return RecyclerView.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
@@ -29,19 +30,19 @@ class MyLayoutManager(resources: Resources, private val screenWidth: Int) : Recy
     }
 
     private fun fill(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
+        // viewWidth = recycler.getViewForPosition(0).measuredWidth
+
         detachAndScrapAttachedViews(recycler)
+
         var firstVisiblePosition = floor(horizontalOffset.toDouble() / viewWidth.toDouble()).toInt()
         firstVisiblePosition = max(0, firstVisiblePosition)
 
-        var lastVisiblePosition = (((screenWidth.toDouble())) / viewWidth.toDouble()).toInt() + firstVisiblePosition
-        lastVisiblePosition = min(itemCount, lastVisiblePosition + 1)   //
+        var lastVisiblePosition =
+            (((screenWidth.toDouble())) / viewWidth.toDouble()).toInt() + firstVisiblePosition
+
+        lastVisiblePosition = min(itemCount, lastVisiblePosition + 1)
 
         for (i in firstVisiblePosition..lastVisiblePosition) {
-//     for infinite loop :
-//            var recyclerIndex = i % itemCount
-//            if (recyclerIndex < 0) {
-//                recyclerIndex += itemCount
-//            }
             if (i >= itemCount) return
             val view = recycler.getViewForPosition(i)
             addView(view)
@@ -59,15 +60,16 @@ class MyLayoutManager(resources: Resources, private val screenWidth: Int) : Recy
         layoutDecorated(view, left, top, right, bottom)
     }
 
-    private fun getTopOffsetForView(centerXCoordinate: Int): Int {
-        val sinValue = (60 * (sin(centerXCoordinate.toDouble() / 60))).toInt()
-        return sinValue + screenWidth / 2
-    }
+    abstract fun getTopOffsetForView(centerXCoordinate: Int): Int
 
     override fun canScrollHorizontally(): Boolean = true
     override fun canScrollVertically(): Boolean = false
 
-    override fun scrollHorizontallyBy(dx: Int, recycler: RecyclerView.Recycler?, state: RecyclerView.State?): Int {
+    override fun scrollHorizontallyBy(
+        dx: Int,
+        recycler: RecyclerView.Recycler?,
+        state: RecyclerView.State?
+    ): Int {
         if (screenWidth > itemCount * viewWidth) {
             return 0;
         }
