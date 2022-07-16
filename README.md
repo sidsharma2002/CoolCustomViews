@@ -4,6 +4,40 @@
 
 ![Screenshot_20211223-115712_CoolCustomViews~2](https://user-images.githubusercontent.com/53833109/147199085-841aa886-2fd1-460c-aac4-78374daf8589.jpg)![Screenshot_20211223-115722_CoolCustomViews~2](https://user-images.githubusercontent.com/53833109/147199286-b065d5b4-296a-4747-8135-26ec576cc224.jpg)
 
+
+### 2. Custom Locus Layout Manager
+
+```
+recyclerView.layoutManager = object : MyLayoutManager(resources, screenWidth) {
+            override fun getTopOffsetForView(centerXCoordinate: Int): Int {
+            // sin curved locus, you may need to do some graph transformations.
+                return sin(centerXCoordinate.toDouble()).toInt()
+            }
+        }
+```
+
+OUTPUT : 
+
+https://user-images.githubusercontent.com/53833109/179348791-abbe7839-ed9f-4cf8-a5d0-e09c6dbef7f5.mp4
+
+
+### 3. Custom Locus GraphAnimator
+
+```
+val graphView = object : GraphView(this, null) {
+            override fun getY(x: Float): Float {
+            // sin curved locus, you may need to do some graph transformations.
+                return sin(x)
+            }
+        }
+```
+
+OUTPUT : 
+
+https://user-images.githubusercontent.com/53833109/179348866-bfdce52e-1ab4-4e58-8369-5c206ddf3418.mp4
+
+
+
 ## Resources
 
 #### Documentaion and Other Sources
